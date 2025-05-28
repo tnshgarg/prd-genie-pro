@@ -1,7 +1,7 @@
 
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
+const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY!);
 
 const SYSTEM_PROMPT = `You are an expert Product Manager with 10+ years of experience creating comprehensive Product Requirements Documents. Generate a detailed, implementation-ready PRD that AI coding assistants can use to build the actual product.
 

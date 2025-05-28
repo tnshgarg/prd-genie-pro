@@ -30,25 +30,29 @@ export default function PRDPage() {
       }
 
       setUser(user);
-      fetchPRD();
+      fetchPRD(user.id);
     };
 
     checkAuth();
   }, [navigate, id]);
 
-  const fetchPRD = async () => {
+  const fetchPRD = async (userId: string) => {
     try {
-      const response = await fetch(`/api/prds/${id}`);
+      const { data, error } = await supabase
+        .from("prds")
+        .select("*")
+        .eq("id", id)
+        .eq("user_id", userId)
+        .single();
 
-      if (!response.ok) {
-        if (response.status === 404) {
+      if (error) {
+        if (error.code === "PGRST116") {
           navigate("/dashboard");
           return;
         }
-        throw new Error("Failed to fetch PRD");
+        throw error;
       }
 
-      const data = await response.json();
       setPrd(data);
     } catch (error) {
       toast({

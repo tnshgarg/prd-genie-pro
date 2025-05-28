@@ -1,35 +1,50 @@
+"use client";
 
-'use client'
-
-import { useState } from 'react'
-import Link from 'next/link'
-import { PRD } from '@/types'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Heart, Search, FileText, Calendar } from 'lucide-react'
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { PRD } from "@/types";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Heart, Search, FileText, Calendar } from "lucide-react";
 
 interface PRDGridProps {
-  prds: PRD[]
+  prds: PRD[];
 }
 
 export function PRDGrid({ prds }: PRDGridProps) {
-  const [searchTerm, setSearchTerm] = useState('')
-  const [filterCategory, setFilterCategory] = useState<string>('all')
-  const [filterStatus, setFilterStatus] = useState<string>('all')
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterCategory, setFilterCategory] = useState<string>("all");
+  const [filterStatus, setFilterStatus] = useState<string>("all");
 
   const filteredPRDs = prds.filter((prd) => {
-    const matchesSearch = prd.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         prd.original_idea.toLowerCase().includes(searchTerm.toLowerCase())
-    const matchesCategory = filterCategory === 'all' || prd.category === filterCategory
-    const matchesStatus = filterStatus === 'all' || prd.status === filterStatus
-    
-    return matchesSearch && matchesCategory && matchesStatus
-  })
+    const matchesSearch =
+      prd.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      prd.original_idea.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory =
+      filterCategory === "all" || prd.category === filterCategory;
+    const matchesStatus = filterStatus === "all" || prd.status === filterStatus;
 
-  const categories = Array.from(new Set(prds.map(prd => prd.category).filter(Boolean)))
+    return matchesSearch && matchesCategory && matchesStatus;
+  });
+
+  const categories = Array.from(
+    new Set(prds.map((prd) => prd.category).filter(Boolean))
+  );
 
   return (
     <div className="space-y-6">
@@ -43,7 +58,7 @@ export function PRDGrid({ prds }: PRDGridProps) {
             className="pl-10"
           />
         </div>
-        
+
         <Select value={filterCategory} onValueChange={setFilterCategory}>
           <SelectTrigger className="w-full md:w-48">
             <SelectValue placeholder="Filter by category" />
@@ -57,7 +72,7 @@ export function PRDGrid({ prds }: PRDGridProps) {
             ))}
           </SelectContent>
         </Select>
-        
+
         <Select value={filterStatus} onValueChange={setFilterStatus}>
           <SelectTrigger className="w-full md:w-48">
             <SelectValue placeholder="Filter by status" />
@@ -74,16 +89,18 @@ export function PRDGrid({ prds }: PRDGridProps) {
       {filteredPRDs.length === 0 ? (
         <div className="text-center py-12">
           <FileText className="mx-auto h-12 w-12 text-gray-400" />
-          <h3 className="mt-2 text-sm font-semibold text-gray-900">No PRDs found</h3>
+          <h3 className="mt-2 text-sm font-semibold text-gray-900">
+            No PRDs found
+          </h3>
           <p className="mt-1 text-sm text-gray-500">
-            {prds.length === 0 
-              ? "Get started by creating your first PRD" 
+            {prds.length === 0
+              ? "Get started by creating your first PRD"
               : "Try adjusting your search or filters"}
           </p>
           {prds.length === 0 && (
             <div className="mt-6">
               <Button asChild>
-                <Link href="/generate">Create PRD</Link>
+                <Link to="/generate">Create PRD</Link>
               </Button>
             </div>
           )}
@@ -94,7 +111,9 @@ export function PRDGrid({ prds }: PRDGridProps) {
             <Card key={prd.id} className="hover:shadow-lg transition-shadow">
               <CardHeader>
                 <div className="flex items-start justify-between">
-                  <CardTitle className="text-lg line-clamp-2">{prd.title}</CardTitle>
+                  <CardTitle className="text-lg line-clamp-2">
+                    {prd.title}
+                  </CardTitle>
                   {prd.is_favorite && (
                     <Heart className="h-4 w-4 text-red-500 fill-current flex-shrink-0" />
                   )}
@@ -111,21 +130,21 @@ export function PRDGrid({ prds }: PRDGridProps) {
                         {prd.category}
                       </Badge>
                     )}
-                    <Badge 
-                      variant={prd.status === 'final' ? 'default' : 'outline'}
+                    <Badge
+                      variant={prd.status === "final" ? "default" : "outline"}
                       className="text-xs"
                     >
                       {prd.status}
                     </Badge>
                   </div>
-                  
+
                   <div className="flex items-center text-sm text-gray-500">
                     <Calendar className="h-4 w-4 mr-1" />
                     {new Date(prd.created_at).toLocaleDateString()}
                   </div>
-                  
+
                   <Button asChild className="w-full">
-                    <Link href={`/prd/${prd.id}`}>View PRD</Link>
+                    <Link to={`/prd/${prd.id}`}>View PRD</Link>
                   </Button>
                 </div>
               </CardContent>
@@ -134,5 +153,5 @@ export function PRDGrid({ prds }: PRDGridProps) {
         </div>
       )}
     </div>
-  )
+  );
 }
