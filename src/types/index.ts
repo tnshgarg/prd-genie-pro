@@ -1,4 +1,3 @@
-
 export interface PRD {
   id: string
   user_id: string
@@ -32,3 +31,32 @@ export const PRODUCT_CATEGORIES = [
 ] as const
 
 export type ProductCategory = typeof PRODUCT_CATEGORIES[number]
+
+export type IdeaStatus = "new" | "in_progress" | "ready_for_prd" | "archived";
+export type IdeaPriority = "low" | "medium" | "high";
+
+export interface Idea {
+  id: string;
+  title: string;
+  description: string;
+  category: string;
+  status: IdeaStatus;
+  priority: IdeaPriority;
+  market_size: string;
+  competition: string;
+  notes: string;
+  is_favorite: boolean;
+  target_audience?: string;
+  user_id: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface IdeaCollection {
+  id: string;
+  user_id: string;
+  name: string;
+  description?: string;
+  created_at: string;
+  updated_at: string;
+}

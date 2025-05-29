@@ -72,10 +72,12 @@ export function AuthForm({ mode }: AuthFormProps) {
 
         navigate("/dashboard");
       }
-    } catch (error: any) {
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : "An error occurred";
       toast({
         title: "Error",
-        description: error.message,
+        description: errorMessage,
         variant: "destructive",
       });
     } finally {
@@ -86,10 +88,10 @@ export function AuthForm({ mode }: AuthFormProps) {
   return (
     <Card className="w-full max-w-md">
       <CardHeader>
-        <CardTitle>
+        <CardTitle className="text-foreground">
           {mode === "login" ? "Welcome Back" : "Create Account"}
         </CardTitle>
-        <CardDescription>
+        <CardDescription className="text-muted-foreground">
           {mode === "login"
             ? "Sign in to your account to continue"
             : "Sign up to start generating PRDs"}
@@ -98,7 +100,9 @@ export function AuthForm({ mode }: AuthFormProps) {
       <CardContent>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="email" className="text-foreground">
+              Email
+            </Label>
             <Input
               id="email"
               type="email"
@@ -106,12 +110,14 @@ export function AuthForm({ mode }: AuthFormProps) {
               {...register("email")}
             />
             {errors.email && (
-              <p className="text-sm text-red-600">{errors.email.message}</p>
+              <p className="text-sm text-destructive">{errors.email.message}</p>
             )}
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
+            <Label htmlFor="password" className="text-foreground">
+              Password
+            </Label>
             <Input
               id="password"
               type="password"
@@ -119,7 +125,9 @@ export function AuthForm({ mode }: AuthFormProps) {
               {...register("password")}
             />
             {errors.password && (
-              <p className="text-sm text-red-600">{errors.password.message}</p>
+              <p className="text-sm text-destructive">
+                {errors.password.message}
+              </p>
             )}
           </div>
 

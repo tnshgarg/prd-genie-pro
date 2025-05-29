@@ -93,11 +93,13 @@ export function PRDViewer({ prd }: PRDViewerProps) {
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
-      <Card>
+      <Card className="bg-card">
         <CardHeader>
           <div className="flex items-start justify-between">
             <div className="space-y-2">
-              <CardTitle className="text-2xl">{prd.title}</CardTitle>
+              <CardTitle className="text-2xl text-foreground">
+                {prd.title}
+              </CardTitle>
               <div className="flex items-center space-x-2">
                 {prd.category && (
                   <Badge variant="secondary">{prd.category}</Badge>
@@ -105,7 +107,7 @@ export function PRDViewer({ prd }: PRDViewerProps) {
                 <Badge variant={prd.status === "final" ? "default" : "outline"}>
                   {prd.status}
                 </Badge>
-                <span className="text-sm text-gray-500">
+                <span className="text-sm text-muted-foreground">
                   Created {new Date(prd.created_at).toLocaleDateString()}
                 </span>
               </div>
@@ -116,7 +118,7 @@ export function PRDViewer({ prd }: PRDViewerProps) {
                 variant="outline"
                 size="sm"
                 onClick={toggleFavorite}
-                className={isFavorite ? "text-red-500" : ""}
+                className={isFavorite ? "text-destructive" : ""}
               >
                 <Heart
                   className={`h-4 w-4 ${isFavorite ? "fill-current" : ""}`}
@@ -146,43 +148,45 @@ export function PRDViewer({ prd }: PRDViewerProps) {
         </CardHeader>
       </Card>
 
-      <Card>
+      <Card className="bg-card">
         <CardHeader>
-          <CardTitle>Original Idea</CardTitle>
+          <CardTitle className="text-foreground">Original Idea</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-gray-700 whitespace-pre-wrap">
+          <p className="text-muted-foreground whitespace-pre-wrap">
             {prd.original_idea}
           </p>
         </CardContent>
       </Card>
 
-      <Card>
+      <Card className="bg-card">
         <CardHeader>
-          <CardTitle>Product Requirements Document</CardTitle>
+          <CardTitle className="text-foreground">
+            Product Requirements Document
+          </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="prose max-w-none">
+          <div className="prose dark:prose-invert max-w-none prose-headings:text-foreground prose-p:text-muted-foreground prose-strong:text-foreground prose-code:text-foreground prose-code:bg-muted prose-pre:bg-muted prose-pre:text-foreground prose-blockquote:text-muted-foreground prose-blockquote:border-primary">
             <ReactMarkdown
               remarkPlugins={[remarkGfm]}
               components={{
                 h1: ({ children }) => (
-                  <h1 className="text-2xl font-bold mt-8 mb-4 text-gray-900">
+                  <h1 className="text-2xl font-bold mt-8 mb-4 text-foreground">
                     {children}
                   </h1>
                 ),
                 h2: ({ children }) => (
-                  <h2 className="text-xl font-semibold mt-6 mb-3 text-gray-800">
+                  <h2 className="text-xl font-semibold mt-6 mb-3 text-foreground">
                     {children}
                   </h2>
                 ),
                 h3: ({ children }) => (
-                  <h3 className="text-lg font-medium mt-4 mb-2 text-gray-700">
+                  <h3 className="text-lg font-medium mt-4 mb-2 text-foreground">
                     {children}
                   </h3>
                 ),
                 p: ({ children }) => (
-                  <p className="mb-4 text-gray-600 leading-relaxed">
+                  <p className="mb-4 text-muted-foreground leading-relaxed">
                     {children}
                   </p>
                 ),
@@ -195,20 +199,20 @@ export function PRDViewer({ prd }: PRDViewerProps) {
                   </ol>
                 ),
                 li: ({ children }) => (
-                  <li className="text-gray-600">{children}</li>
+                  <li className="text-muted-foreground">{children}</li>
                 ),
                 blockquote: ({ children }) => (
-                  <blockquote className="border-l-4 border-blue-500 pl-4 italic text-gray-700 my-4">
+                  <blockquote className="border-l-4 border-primary pl-4 italic text-muted-foreground my-4">
                     {children}
                   </blockquote>
                 ),
                 code: ({ children }) => (
-                  <code className="bg-gray-100 px-1 py-0.5 rounded text-sm font-mono">
+                  <code className="bg-muted px-1 py-0.5 rounded text-sm font-mono">
                     {children}
                   </code>
                 ),
                 pre: ({ children }) => (
-                  <pre className="bg-gray-100 p-4 rounded-lg overflow-x-auto mb-4">
+                  <pre className="bg-muted p-4 rounded-lg overflow-x-auto mb-4">
                     {children}
                   </pre>
                 ),

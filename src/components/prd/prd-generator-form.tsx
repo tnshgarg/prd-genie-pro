@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { prdGenerationSchema, PRDGenerationData } from "@/lib/validations";
 import { PRODUCT_CATEGORIES } from "@/types";
 import { Button } from "@/components/ui/button";
@@ -28,10 +28,13 @@ import { Spinner } from "@/components/ui/spinner";
 import { toast } from "@/hooks/use-toast";
 import { Lightbulb, Rocket, Users } from "lucide-react";
 import { supabase } from "@/lib/supabase";
+import { Idea } from "@/types";
 
 export function PRDGeneratorForm() {
   const [isGenerating, setIsGenerating] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const idea = location.state?.idea as Idea | undefined;
 
   const {
     register,
@@ -42,6 +45,16 @@ export function PRDGeneratorForm() {
   } = useForm<PRDGenerationData>({
     resolver: zodResolver(prdGenerationSchema),
   });
+
+  useEffect(() => {
+    if (idea) {
+      setValue("idea", idea.description);
+      setValue("category", idea.category);
+      if (idea.target_audience) {
+        setValue("targetAudience", idea.target_audience);
+      }
+    }
+  }, [idea, setValue]);
 
   const category = watch("category");
 
@@ -129,6 +142,7 @@ Format the response in Markdown.`;
           category: data.category,
           status: "final",
           is_favorite: false,
+          idea_id: idea?.id, // Link to the original idea if it exists
         })
         .select()
         .single();
@@ -248,7 +262,7 @@ Format the response in Markdown.`;
           </div>
 
           <Button type="submit" className="w-full" size="lg">
-            Generate PRD with AI
+            Generate PRD
           </Button>
         </form>
       </CardContent>

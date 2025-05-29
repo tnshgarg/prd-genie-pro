@@ -12,6 +12,7 @@ import {
   LogOut,
 } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export default function LandingPage() {
   const navigate = useNavigate();
@@ -19,19 +20,19 @@ export default function LandingPage() {
 
   const features = [
     {
-      icon: <Sparkles className="h-6 w-6 text-blue-600" />,
+      icon: <Sparkles className="h-6 w-6 text-primary" />,
       title: "AI-Powered Generation",
       description:
         "Transform your product ideas into comprehensive PRDs using advanced AI technology.",
     },
     {
-      icon: <Zap className="h-6 w-6 text-blue-600" />,
+      icon: <Zap className="h-6 w-6 text-primary" />,
       title: "Lightning Fast",
       description:
         "Generate detailed PRDs in seconds, saving you hours of manual work.",
     },
     {
-      icon: <Shield className="h-6 w-6 text-blue-600" />,
+      icon: <Shield className="h-6 w-6 text-primary" />,
       title: "Secure & Private",
       description:
         "Your ideas and documents are protected with enterprise-grade security.",
@@ -40,29 +41,34 @@ export default function LandingPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="text-center">
-          <FileText className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-          <p>Loading...</p>
+          <FileText className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+          <p className="text-foreground">Loading...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b">
+      <header className="bg-background border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-2">
-              <FileText className="h-8 w-8 text-blue-600" />
-              <span className="text-xl font-bold">PRD Generator</span>
+              <FileText className="h-8 w-8 text-primary" />
+              <span className="text-xl font-bold text-foreground">
+                PRD Generator
+              </span>
             </div>
             <div className="flex items-center space-x-4">
+              <ThemeToggle />
               {isAuthenticated ? (
                 <>
-                  <span className="text-sm text-gray-500">{user?.email}</span>
+                  <span className="text-sm text-muted-foreground">
+                    {user?.email}
+                  </span>
                   <Button
                     variant="ghost"
                     onClick={() => navigate("/dashboard")}
@@ -94,11 +100,11 @@ export default function LandingPage() {
       <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
+            <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-6">
               Transform Your Ideas into
-              <span className="text-blue-600"> Professional PRDs</span>
+              <span className="text-primary"> Professional PRDs</span>
             </h1>
-            <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+            <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
               Generate comprehensive Product Requirements Documents in minutes
               using AI. Perfect for product managers, entrepreneurs, and
               development teams.
@@ -130,13 +136,13 @@ export default function LandingPage() {
       </section>
 
       {/* Features Section */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-card">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl font-bold text-foreground mb-4">
               Why Choose PRD Generator?
             </h2>
-            <p className="text-xl text-gray-600">
+            <p className="text-xl text-muted-foreground">
               Everything you need to create professional PRDs quickly and
               efficiently
             </p>
@@ -146,13 +152,15 @@ export default function LandingPage() {
             {features.map((feature, index) => (
               <Card key={index} className="border-none shadow-lg">
                 <CardHeader>
-                  <div className="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center mb-4">
+                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                     {feature.icon}
                   </div>
-                  <CardTitle className="text-xl">{feature.title}</CardTitle>
+                  <CardTitle className="text-xl text-foreground">
+                    {feature.title}
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-gray-600">{feature.description}</p>
+                  <p className="text-muted-foreground">{feature.description}</p>
                 </CardContent>
               </Card>
             ))}
@@ -163,29 +171,21 @@ export default function LandingPage() {
       {/* CTA Section */}
       <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-blue-600 rounded-2xl p-12 text-center">
-            <h2 className="text-3xl font-bold text-white mb-4">
+          <div className="bg-card rounded-2xl p-12 text-center border shadow-sm">
+            <h2 className="text-3xl font-bold text-foreground mb-4">
               Ready to Streamline Your PRD Process?
             </h2>
-            <p className="text-xl text-blue-100 mb-8 max-w-3xl mx-auto">
+            <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
               Join thousands of product managers who are saving time and
               creating better PRDs with AI.
             </p>
             {isAuthenticated ? (
-              <Button
-                size="lg"
-                variant="secondary"
-                onClick={() => navigate("/dashboard")}
-              >
+              <Button size="lg" onClick={() => navigate("/dashboard")}>
                 Go to Dashboard
                 <ArrowRight className="h-4 w-4 ml-2" />
               </Button>
             ) : (
-              <Button
-                size="lg"
-                variant="secondary"
-                onClick={() => navigate("/signup")}
-              >
+              <Button size="lg" onClick={() => navigate("/signup")}>
                 Get Started for Free
                 <ArrowRight className="h-4 w-4 ml-2" />
               </Button>
@@ -195,16 +195,18 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-white border-t">
+      <footer className="bg-card border-t">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex justify-between items-center">
             <div className="flex items-center space-x-2">
-              <FileText className="h-6 w-6 text-blue-600" />
-              <span className="font-medium">PRD Generator</span>
+              <FileText className="h-6 w-6 text-primary" />
+              <span className="text-lg font-semibold text-foreground">
+                PRD Generator
+              </span>
             </div>
-            <div className="text-sm text-gray-500">
+            <p className="text-sm text-muted-foreground">
               © {new Date().getFullYear()} PRD Generator. All rights reserved.
-            </div>
+            </p>
           </div>
         </div>
       </footer>
