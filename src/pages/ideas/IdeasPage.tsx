@@ -35,6 +35,7 @@ import {
   StarOff,
   FileText,
   LogOut,
+  ArrowLeft,
 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { Navbar } from "@/components/layout/navbar";
@@ -54,6 +55,7 @@ export default function IdeasPage() {
   const [newIdea, setNewIdea] = useState({
     title: "",
     description: "",
+    content: "",
     category: "",
     status: "new" as IdeaStatus,
     priority: "medium" as IdeaPriority,
@@ -86,6 +88,7 @@ export default function IdeasPage() {
       setNewIdea({
         title: "",
         description: "",
+        content: "",
         category: "",
         status: "new",
         priority: "medium",
@@ -143,7 +146,18 @@ export default function IdeasPage() {
       {/* Main Content */}
       <main className="container mx-auto py-8">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold">My Ideas</h1>
+          <div className="flex items-center gap-4">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => navigate(-1)}
+              className="gap-2"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Back
+            </Button>
+            <h1 className="text-3xl font-bold">My Ideas</h1>
+          </div>
           <Dialog
             open={isCreateDialogOpen}
             onOpenChange={setIsCreateDialogOpen}

@@ -1,14 +1,15 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { RichTextEditor } from "@/components/editor/RichTextEditor";
 import { Button } from "@/components/ui/button";
-import { Save } from "lucide-react";
+import { Save, ArrowLeft } from "lucide-react";
 import { useIdeas } from "@/hooks/use-ideas";
 import { Idea } from "@/types";
 import { useEffect, useCallback } from "react";
 
 export default function DetailedIdeaPage() {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const { ideas, updateIdea, loading } = useIdeas();
   const idea = ideas.find((idea) => idea.id === id);
   const [content, setContent] = useState("");
@@ -36,7 +37,18 @@ export default function DetailedIdeaPage() {
   return (
     <div className="container mx-auto py-8">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Idea Details</h1>
+        <div className="flex items-center gap-4">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => navigate(-1)}
+            className="gap-2"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Back
+          </Button>
+          <h1 className="text-3xl font-bold">Idea Details</h1>
+        </div>
         <Button onClick={handleManualSave} className="flex items-center gap-2">
           <Save className="h-4 w-4" />
           Save
