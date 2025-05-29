@@ -18,7 +18,7 @@ export default function HomePage() {
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <FileText className="h-8 w-8 text-blue-600" />
-            <span className="text-xl font-bold">PRD Generator</span>
+            <span className="text-xl font-bold">IdeaVault</span>
           </div>
           <div className="flex items-center space-x-4">
             <Button variant="ghost" asChild>
@@ -38,7 +38,7 @@ export default function HomePage() {
             Powered by Google Gemini AI
           </Badge>
           <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-            Transform Ideas into Implementation-Ready PRDs
+            Transform Ideas into Lovable, Bolt.new and Cursor Prompts
           </h1>
           <p className="text-xl text-gray-600 mb-8 leading-relaxed">
             Generate comprehensive Product Requirements Documents in minutes
@@ -49,7 +49,7 @@ export default function HomePage() {
             <Button size="lg" asChild className="text-lg px-8 py-6">
               <Link to="/signup">
                 <Rocket className="mr-2 h-5 w-5" />
-                Start Generating PRDs
+                Start Generating Prompts
               </Link>
             </Button>
             <Button
@@ -68,7 +68,7 @@ export default function HomePage() {
       <section className="py-20 px-4 bg-white/50">
         <div className="container mx-auto max-w-6xl">
           <h2 className="text-3xl font-bold text-center mb-12">
-            Why Choose PRD Generator?
+            Why Choose IdeaVault?
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow">
@@ -76,8 +76,8 @@ export default function HomePage() {
                 <Zap className="h-12 w-12 text-blue-600 mb-4" />
                 <CardTitle>Lightning Fast</CardTitle>
                 <CardDescription>
-                  Generate complete PRDs in under 2 minutes. No more spending
-                  hours on documentation.
+                  Generate complete Lovable, Bolt.new and Cursor Prompts in
+                  under 2 minutes. No more spending hours on documentation.
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -160,10 +160,12 @@ export default function HomePage() {
               <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-2xl font-bold text-green-600">2</span>
               </div>
-              <h3 className="text-xl font-semibold mb-2">AI Generates PRD</h3>
+              <h3 className="text-xl font-semibold mb-2">
+                AI Generates Prompts
+              </h3>
               <p className="text-gray-600">
-                Our AI creates a comprehensive 8-section PRD with all technical
-                details
+                Our AI creates a comprehensive 8-10 section Prompt with all
+                tools like Lovable, Bolt.new and Cursor details
               </p>
             </div>
 
@@ -187,8 +189,8 @@ export default function HomePage() {
             Ready to Transform Your Ideas?
           </h2>
           <p className="text-xl text-blue-100 mb-8">
-            Join thousands of product managers and developers who use PRD
-            Generator to create better products faster.
+            Join thousands of solo founders and entrepreneurs who use IdeaVault
+            to create better products faster.
           </p>
           <Button
             size="lg"
@@ -212,12 +214,11 @@ export default function HomePage() {
             <div>
               <div className="flex items-center space-x-2 mb-4">
                 <FileText className="h-6 w-6 text-blue-400" />
-                <span className="text-lg font-bold text-white">
-                  PRD Generator
-                </span>
+                <span className="text-lg font-bold text-white">IdeaVault</span>
               </div>
               <p className="text-sm">
-                Transform product ideas into implementation-ready PRDs using AI.
+                Transform product ideas into prompts for Lovable, Bolt.new and
+                Cursor.
               </p>
             </div>
 
@@ -286,7 +287,7 @@ export default function HomePage() {
           </div>
 
           <div className="border-t border-gray-800 mt-8 pt-8 text-center text-sm">
-            <p>&copy; 2024 PRD Generator. All rights reserved.</p>
+            <p>&copy; 2024 IdeaVault. All rights reserved.</p>
           </div>
         </div>
       </footer>

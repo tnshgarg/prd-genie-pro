@@ -211,14 +211,14 @@ export default function DashboardPage() {
         >
           <div className="flex justify-between items-center">
             <TabsList>
-              <TabsTrigger value="prds">PRDs</TabsTrigger>
               <TabsTrigger value="ideas">Ideas</TabsTrigger>
+              <TabsTrigger value="prds">Prompts</TabsTrigger>
             </TabsList>
 
             {activeTab === "prds" ? (
               <Button onClick={() => navigate("/generate")}>
                 <Plus className="h-4 w-4 mr-2" />
-                New PRD
+                Generate New Prompt
               </Button>
             ) : (
               <Dialog
@@ -489,7 +489,7 @@ export default function DashboardPage() {
                           handleGeneratePRD(idea);
                         }}
                       >
-                        Generate PRD
+                        Generate Prompt for Lovable, Bolt.new and Cursor
                       </Button>
                     </div>
                   </CardContent>
@@ -575,7 +575,7 @@ export default function DashboardPage() {
                     Close
                   </Button>
                   <Button onClick={() => handleGeneratePRD(selectedIdea)}>
-                    Generate PRD
+                    Generate Prompt for Lovable, Bolt.new and Cursor
                   </Button>
                 </div>
               </div>

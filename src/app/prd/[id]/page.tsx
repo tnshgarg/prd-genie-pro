@@ -25,7 +25,7 @@ export default function PRDPage() {
         } = await supabase.auth.getUser();
 
         if (userError) throw userError;
-        if (!user) throw new Error("You must be logged in to view PRDs");
+        if (!user) throw new Error("You must be logged in to view Prompts");
 
         const { data, error } = await supabase
           .from("prds")
@@ -34,11 +34,11 @@ export default function PRDPage() {
           .single();
 
         if (error) throw error;
-        if (!data) throw new Error("PRD not found");
+        if (!data) throw new Error("Prompt not found");
 
         setPrd(data);
       } catch (error) {
-        console.error("Error fetching PRD:", error);
+        console.error("Error fetching Prompts:", error);
         navigate("/dashboard");
       } finally {
         setLoading(false);

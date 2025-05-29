@@ -87,7 +87,7 @@ export default function LandingPage() {
             <div className="flex items-center space-x-2">
               <FileText className="h-8 w-8 text-primary" />
               <span className="text-xl font-bold text-foreground">
-                PRD Generator
+                IdeaVault
               </span>
             </div>
             <div className="flex items-center space-x-4">
@@ -130,12 +130,14 @@ export default function LandingPage() {
           <div className="text-center">
             <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-6">
               Transform Your Ideas into
-              <span className="text-primary"> Professional PRDs</span>
+              <span className="text-primary">
+                {" "}
+                Lovable, Bolt.new and Cursor Prompts
+              </span>
             </h1>
             <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
-              Generate comprehensive Product Requirements Documents in minutes
-              using AI. Perfect for product managers, entrepreneurs, and
-              development teams.
+              Generate comprehensive Lovable, Bolt.new and Cursor Prompts in
+              minutes using AI. Perfect for solo founders and entrepreneurs.
             </p>
             <div className="flex justify-center space-x-4">
               {isAuthenticated ? (
@@ -168,7 +170,7 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold text-foreground mb-4">
-              Why Choose PRD Generator?
+              Why Choose IdeaVault?
             </h2>
             <p className="text-xl text-muted-foreground">
               Everything you need to create professional PRDs quickly and
@@ -229,11 +231,11 @@ export default function LandingPage() {
             <div className="flex items-center space-x-2">
               <FileText className="h-6 w-6 text-primary" />
               <span className="text-lg font-semibold text-foreground">
-                PRD Generator
+                IdeaVault
               </span>
             </div>
             <p className="text-sm text-muted-foreground">
-              © {new Date().getFullYear()} PRD Generator. All rights reserved.
+              © {new Date().getFullYear()} IdeaVault. All rights reserved.
             </p>
           </div>
         </div>

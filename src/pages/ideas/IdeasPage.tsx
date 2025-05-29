@@ -331,7 +331,7 @@ export default function IdeasPage() {
           {filteredIdeas.map((idea) => (
             <Card
               key={idea.id}
-              className="relative cursor-pointer hover:shadow-md transition-shadow flex flex-col"
+              className="relative cursor-pointer hover:shadow-md transition-shadow flex flex-col h-full"
               onClick={() => navigate(`/idea/${idea.id}`)}
             >
               <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-2">
@@ -354,9 +354,7 @@ export default function IdeasPage() {
                 </Button>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-600 mb-4 line-clamp-3">
-                  {idea.description}
-                </p>
+                <p className="text-gray-600 mb-4">{idea.description}</p>
                 <div className="flex flex-wrap gap-2 mb-4">
                   <span
                     className={`px-2 py-1 rounded-full text-xs font-medium ${
@@ -407,7 +405,7 @@ export default function IdeasPage() {
                     }}
                   >
                     <FileText className="h-4 w-4 mr-2" />
-                    View PRD
+                    View Prompt
                   </Button>
                 </div>
               </CardFooter>
