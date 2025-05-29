@@ -14,6 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Spinner } from "@/components/ui/spinner";
 
 const PRODUCT_CATEGORIES = [
   "SaaS",
@@ -90,85 +91,94 @@ export default function GeneratePage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background">
       <Navbar />
 
       <main className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="bg-white shadow-sm rounded-lg p-6">
-          <h1 className="text-2xl font-bold text-gray-900 mb-6">
+        <div className="bg-card shadow-sm rounded-lg p-6">
+          <h1 className="text-2xl font-bold text-foreground mb-6">
             Generate New PRD
           </h1>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <Label htmlFor="productIdea">Product Idea</Label>
-              <Textarea
-                id="productIdea"
-                value={productIdea}
-                onChange={(e) => setProductIdea(e.target.value)}
-                placeholder="Describe your product idea in detail..."
-                required
-                rows={6}
-                className="resize-none"
-              />
-              <p className="text-sm text-gray-500 mt-1">
-                Provide a detailed description of your product idea, including
-                its purpose and key features.
+          {loading ? (
+            <div className="flex flex-col items-center justify-center py-16">
+              <Spinner size="lg" />
+              <p className="mt-4 text-muted-foreground text-lg">
+                Generating your PRD...
               </p>
             </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div>
+                <Label htmlFor="productIdea">Product Idea</Label>
+                <Textarea
+                  id="productIdea"
+                  value={productIdea}
+                  onChange={(e) => setProductIdea(e.target.value)}
+                  placeholder="Describe your product idea in detail..."
+                  required
+                  rows={6}
+                  className="resize-none"
+                />
+                <p className="text-sm text-muted-foreground mt-1">
+                  Provide a detailed description of your product idea, including
+                  its purpose and key features.
+                </p>
+              </div>
 
-            <div>
-              <Label htmlFor="productCategory">Product Category</Label>
-              <Select
-                value={productCategory}
-                onValueChange={setProductCategory}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select a category" />
-                </SelectTrigger>
-                <SelectContent>
-                  {PRODUCT_CATEGORIES.map((category) => (
-                    <SelectItem key={category} value={category}>
-                      {category}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <p className="text-sm text-gray-500 mt-1">
-                Choose the category that best describes your product.
-              </p>
-            </div>
+              <div>
+                <Label htmlFor="productCategory">Product Category</Label>
+                <Select
+                  value={productCategory}
+                  onValueChange={setProductCategory}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {PRODUCT_CATEGORIES.map((category) => (
+                      <SelectItem key={category} value={category}>
+                        {category}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Choose the category that best describes your product.
+                </p>
+              </div>
 
-            <div>
-              <Label htmlFor="targetAudience">Target Audience</Label>
-              <Textarea
-                id="targetAudience"
-                value={targetAudience}
-                onChange={(e) => setTargetAudience(e.target.value)}
-                placeholder="Describe your target audience..."
-                required
-                rows={4}
-                className="resize-none"
-              />
-              <p className="text-sm text-gray-500 mt-1">
-                Describe who your product is for, including demographics, needs,
-                and pain points.
-              </p>
-            </div>
+              <div>
+                <Label htmlFor="targetAudience">Target Audience</Label>
+                <Textarea
+                  id="targetAudience"
+                  value={targetAudience}
+                  onChange={(e) => setTargetAudience(e.target.value)}
+                  placeholder="Describe your target audience..."
+                  required
+                  rows={4}
+                  className="resize-none"
+                />
+                <p className="text-sm text-muted-foreground mt-1">
+                  Describe who your product is for, including demographics,
+                  needs, and pain points.
+                </p>
+              </div>
 
-            <div className="flex justify-end space-x-4">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => navigate("/dashboard")}
-              >
-                Cancel
-              </Button>
-              <Button type="submit" disabled={loading}>
-                {loading ? "Generating..." : "Generate PRD"}
-              </Button>
-            </div>
-          </form>
+              <div className="flex justify-end space-x-4">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => navigate("/dashboard")}
+                >
+                  Cancel
+                </Button>
+                <Button type="submit" disabled={loading}>
+                  {loading ? "Generating..." : "Generate PRD"}
+                </Button>
+              </div>
+            </form>
+          )}
         </div>
       </main>
     </div>

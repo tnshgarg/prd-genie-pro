@@ -32,6 +32,7 @@ import {
 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { Navbar } from "@/components/layout/navbar";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function IdeasPage() {
   const navigate = useNavigate();
@@ -102,11 +103,29 @@ export default function IdeasPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading ideas...</p>
-        </div>
+      <div className="min-h-screen bg-background">
+        <Navbar showIdeas={false} />
+        <main className="container mx-auto py-8">
+          <div className="flex justify-between items-center mb-8">
+            <Skeleton className="h-10 w-48" />
+            <Skeleton className="h-10 w-32" />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[...Array(6)].map((_, i) => (
+              <Card className="bg-card" key={i}>
+                <CardHeader>
+                  <Skeleton className="h-6 w-40 mb-2" />
+                  <Skeleton className="h-4 w-24" />
+                </CardHeader>
+                <CardContent>
+                  <Skeleton className="h-4 w-full mb-2" />
+                  <Skeleton className="h-4 w-3/4 mb-2" />
+                  <Skeleton className="h-4 w-1/2" />
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </main>
       </div>
     );
   }

@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function LandingPage() {
   const navigate = useNavigate();
@@ -41,11 +42,38 @@ export default function LandingPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="text-center">
-          <FileText className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-          <p className="text-foreground">Loading...</p>
-        </div>
+      <div className="min-h-screen bg-background">
+        <header className="bg-background border-b">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-between items-center h-16">
+              <div className="flex items-center space-x-2">
+                <Skeleton className="h-8 w-8 rounded-full" />
+                <Skeleton className="h-8 w-32" />
+              </div>
+              <div className="flex items-center space-x-4">
+                <Skeleton className="h-8 w-8 rounded-full" />
+                <Skeleton className="h-8 w-24" />
+              </div>
+            </div>
+          </div>
+        </header>
+        <main className="flex flex-col items-center justify-center flex-1 py-12">
+          <Skeleton className="h-12 w-64 mb-8" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-4xl">
+            {[...Array(3)].map((_, i) => (
+              <Card className="bg-card" key={i}>
+                <CardHeader>
+                  <Skeleton className="h-8 w-8 mb-2 rounded-full" />
+                  <Skeleton className="h-6 w-32 mb-2" />
+                </CardHeader>
+                <CardContent>
+                  <Skeleton className="h-4 w-full mb-2" />
+                  <Skeleton className="h-4 w-3/4" />
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </main>
       </div>
     );
   }

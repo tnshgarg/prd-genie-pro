@@ -26,6 +26,20 @@ CREATE TABLE ideas (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
+-- Create PRDs table
+CREATE TABLE prds (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+    title TEXT NOT NULL,
+    original_idea TEXT NOT NULL,
+    generated_prd TEXT NOT NULL,
+    category TEXT,
+    status TEXT NOT NULL CHECK (status IN ('draft', 'final', 'archived')),
+    is_favorite BOOLEAN DEFAULT false,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
 -- Create RLS policies for idea_collections
 ALTER TABLE idea_collections ENABLE ROW LEVEL SECURITY;
 
@@ -64,6 +78,25 @@ CREATE POLICY "Users can delete their own ideas"
     ON ideas FOR DELETE
     USING (auth.uid() = user_id);
 
+-- Create RLS policies for PRDs
+ALTER TABLE prds ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Users can view their own PRDs"
+    ON prds FOR SELECT
+    USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can insert their own PRDs"
+    ON prds FOR INSERT
+    WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "Users can update their own PRDs"
+    ON prds FOR UPDATE
+    USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can delete their own PRDs"
+    ON prds FOR DELETE
+    USING (auth.uid() = user_id);
+
 -- Create indexes for better performance
 CREATE INDEX idx_ideas_user_id ON ideas(user_id);
 CREATE INDEX idx_ideas_status ON ideas(status);
@@ -71,4 +104,32 @@ CREATE INDEX idx_ideas_priority ON ideas(priority);
 CREATE INDEX idx_ideas_created_at ON ideas(created_at);
 
 CREATE INDEX idx_idea_collections_user_id ON idea_collections(user_id);
-CREATE INDEX idx_idea_collections_created_at ON idea_collections(created_at); 
+CREATE INDEX idx_idea_collections_created_at ON idea_collections(created_at);
+
+CREATE INDEX idx_prds_user_id ON prds(user_id);
+CREATE INDEX idx_prds_status ON prds(status);
+CREATE INDEX idx_prds_created_at ON prds(created_at);
+
+-- Create function to delete PRD
+CREATE OR REPLACE FUNCTION delete_prd(prd_id UUID)
+RETURNS VOID
+LANGUAGE plpgsql
+SECURITY DEFINER
+AS $$
+DECLARE
+    v_user_id UUID;
+BEGIN
+    -- Get the current user's ID
+    v_user_id := auth.uid();
+    
+    -- Delete the PRD if it belongs to the current user
+    DELETE FROM prds
+    WHERE id = prd_id
+    AND user_id = v_user_id;
+    
+    -- If no rows were affected, raise an error
+    IF NOT FOUND THEN
+        RAISE EXCEPTION 'PRD not found or you do not have permission to delete it';
+    END IF;
+END;
+$$; 

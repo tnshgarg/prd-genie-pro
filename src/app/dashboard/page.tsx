@@ -5,7 +5,15 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
 import { PRDGrid } from "@/components/dashboard/prd-grid";
-import { Plus, Search, Filter, Star, StarOff, FileText } from "lucide-react";
+import {
+  Plus,
+  Search,
+  Filter,
+  Star,
+  StarOff,
+  FileText,
+  Trash2,
+} from "lucide-react";
 import { User } from "@supabase/supabase-js";
 import { usePRDs } from "@/hooks/use-prds";
 import { useIdeas } from "@/hooks/use-ideas";
@@ -30,10 +38,36 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Skeleton } from "@/components/ui/skeleton";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { toast } from "@/components/ui/use-toast";
 
 export default function DashboardPage() {
-  const { prds, loading: prdsLoading, error: prdsError } = usePRDs();
-  const { ideas, loading: ideasLoading, createIdea, updateIdea } = useIdeas();
+  const {
+    prds,
+    loading: prdsLoading,
+    error: prdsError,
+    refreshPRDs,
+    deletePRD,
+  } = usePRDs();
+  const {
+    ideas,
+    loading: ideasLoading,
+    createIdea,
+    updateIdea,
+    deleteIdea,
+    refreshIdeas,
+  } = useIdeas();
   const [user, setUser] = useState<User | null>(null);
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("prds");
@@ -102,6 +136,14 @@ export default function DashboardPage() {
     await updateIdea(idea.id, { is_favorite: !idea.is_favorite });
   };
 
+  const handleDeleteIdea = async (ideaId: string) => {
+    try {
+      await deleteIdea(ideaId);
+    } catch (error) {
+      console.error("Failed to delete idea:", error);
+    }
+  };
+
   const filteredIdeas = ideas.filter((idea) => {
     const matchesSearch =
       idea.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -115,11 +157,32 @@ export default function DashboardPage() {
 
   if (prdsLoading || ideasLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-background">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
-          <p className="mt-4 text-muted-foreground">Loading...</p>
-        </div>
+      <div className="flex flex-col min-h-screen bg-background">
+        <Navbar />
+        <main className="container mx-auto py-8">
+          <div className="mb-8">
+            <Skeleton className="h-10 w-48 mb-4" />
+            <div className="flex space-x-4 mb-4">
+              <Skeleton className="h-8 w-24" />
+              <Skeleton className="h-8 w-24" />
+            </div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[...Array(6)].map((_, i) => (
+              <Card className="bg-card" key={i}>
+                <CardHeader>
+                  <Skeleton className="h-6 w-40 mb-2" />
+                  <Skeleton className="h-4 w-24" />
+                </CardHeader>
+                <CardContent>
+                  <Skeleton className="h-4 w-full mb-2" />
+                  <Skeleton className="h-4 w-3/4 mb-2" />
+                  <Skeleton className="h-4 w-1/2" />
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </main>
       </div>
     );
   }
@@ -295,7 +358,7 @@ export default function DashboardPage() {
           </div>
 
           <TabsContent value="prds" className="space-y-4">
-            <PRDGrid prds={prds} />
+            <PRDGrid prds={prds} onDelete={refreshPRDs} deletePRD={deletePRD} />
           </TabsContent>
 
           <TabsContent value="ideas" className="space-y-4">
@@ -351,17 +414,48 @@ export default function DashboardPage() {
                   <CardHeader className="pb-2">
                     <div className="flex justify-between items-start">
                       <CardTitle className="text-lg">{idea.title}</CardTitle>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => toggleFavorite(idea)}
-                      >
-                        {idea.is_favorite ? (
-                          <Star className="h-4 w-4 text-yellow-500" />
-                        ) : (
-                          <StarOff className="h-4 w-4" />
-                        )}
-                      </Button>
+                      <div className="flex items-center space-x-2">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => toggleFavorite(idea)}
+                        >
+                          {idea.is_favorite ? (
+                            <Star className="h-4 w-4 text-yellow-500" />
+                          ) : (
+                            <StarOff className="h-4 w-4" />
+                          )}
+                        </Button>
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="text-destructive"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>Delete Idea</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                Are you sure you want to delete this idea? This
+                                action cannot be undone.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogAction
+                                onClick={() => handleDeleteIdea(idea.id)}
+                                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                              >
+                                Delete
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      </div>
                     </div>
                   </CardHeader>
                   <CardContent>

@@ -29,6 +29,7 @@ import { toast } from "@/hooks/use-toast";
 import { Lightbulb, Rocket, Users } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { Idea } from "@/types";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export function PRDGeneratorForm() {
   const [isGenerating, setIsGenerating] = useState(false);
@@ -177,27 +178,11 @@ Format the response in Markdown.`;
     return (
       <Card className="w-full max-w-2xl mx-auto">
         <CardContent className="pt-6">
-          <div className="flex flex-col items-center justify-center py-12 space-y-4">
+          <div className="flex flex-col items-center justify-center py-12 space-y-4 w-full">
             <Spinner size="lg" />
-            <h3 className="text-lg font-semibold">Generating Your PRD</h3>
-            <p className="text-gray-600 text-center">
-              Our AI is analyzing your idea and creating a comprehensive Product
-              Requirements Document. This usually takes 30-60 seconds.
+            <p className="mt-4 text-muted-foreground text-lg">
+              Generating your PRD...
             </p>
-            <div className="flex items-center space-x-4 text-sm text-gray-500">
-              <div className="flex items-center space-x-1">
-                <Lightbulb className="h-4 w-4" />
-                <span>Analyzing idea</span>
-              </div>
-              <div className="flex items-center space-x-1">
-                <Users className="h-4 w-4" />
-                <span>Defining users</span>
-              </div>
-              <div className="flex items-center space-x-1">
-                <Rocket className="h-4 w-4" />
-                <span>Planning features</span>
-              </div>
-            </div>
           </div>
         </CardContent>
       </Card>

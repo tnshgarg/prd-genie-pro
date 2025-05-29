@@ -1,110 +1,86 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useNavigate, useParams, Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "@/lib/supabase";
 import { PRD } from "@/types";
 import { PRDViewer } from "@/components/prd/prd-viewer";
-import { Button } from "@/components/ui/button";
-import { ArrowLeft, FileText } from "lucide-react";
-import { toast } from "@/hooks/use-toast";
-import { User } from "@supabase/supabase-js";
 import { Navbar } from "@/components/layout/navbar";
+import { Skeleton } from "@/components/ui/skeleton";
+import { usePRDs } from "@/hooks/use-prds";
 
 export default function PRDPage() {
-  const [prd, setPrd] = useState<PRD | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [user, setUser] = useState<User | null>(null);
-  const navigate = useNavigate();
   const { id } = useParams();
+  const navigate = useNavigate();
+  const [prd, setPrd] = useState<PRD | null>(null);
+  const [loading, setLoading] = useState(true);
+  const { deletePRD } = usePRDs();
 
   useEffect(() => {
-    const checkAuth = async () => {
-      const {
-        data: { user },
-        error,
-      } = await supabase.auth.getUser();
+    const fetchPRD = async () => {
+      try {
+        const {
+          data: { user },
+          error: userError,
+        } = await supabase.auth.getUser();
 
-      if (error || !user) {
-        navigate("/login");
-        return;
+        if (userError) throw userError;
+        if (!user) throw new Error("You must be logged in to view PRDs");
+
+        const { data, error } = await supabase
+          .from("prds")
+          .select("*")
+          .eq("id", id)
+          .single();
+
+        if (error) throw error;
+        if (!data) throw new Error("PRD not found");
+
+        setPrd(data);
+      } catch (error) {
+        console.error("Error fetching PRD:", error);
+        navigate("/dashboard");
+      } finally {
+        setLoading(false);
       }
-
-      setUser(user);
-      fetchPRD();
     };
 
-    checkAuth();
-  }, [navigate, id]);
+    fetchPRD();
+  }, [id, navigate]);
 
-  const fetchPRD = async () => {
+  const handleDelete = async () => {
     try {
-      const response = await fetch(`/api/prds/${id}`);
-
-      if (!response.ok) {
-        if (response.status === 404) {
-          navigate("/dashboard");
-          return;
-        }
-        throw new Error("Failed to fetch PRD");
-      }
-
-      const data = await response.json();
-      setPrd(data);
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to load PRD",
-        variant: "destructive",
-      });
+      await deletePRD(id!);
       navigate("/dashboard");
-    } finally {
-      setIsLoading(false);
+    } catch (error) {
+      console.error("Failed to delete PRD:", error);
     }
   };
 
-  if (isLoading) {
+  if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="text-center">
-          <FileText className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-          <p className="text-foreground">Loading PRD...</p>
-        </div>
+      <div className="min-h-screen bg-background">
+        <Navbar />
+        <main className="container mx-auto py-8">
+          <div className="space-y-6">
+            <Skeleton className="h-8 w-1/3" />
+            <Skeleton className="h-4 w-1/4" />
+            <Skeleton className="h-[600px] w-full" />
+          </div>
+        </main>
       </div>
     );
   }
 
   if (!prd) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-foreground mb-2">
-            PRD Not Found
-          </h1>
-          <p className="text-muted-foreground mb-4">
-            The PRD you're looking for doesn't exist.
-          </p>
-          <Button asChild>
-            <Link to="/dashboard">Back to Dashboard</Link>
-          </Button>
-        </div>
-      </div>
-    );
+    return null;
   }
 
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-6">
-          <Button variant="ghost" size="sm" asChild>
-            <Link to="/dashboard">
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Back to Dashboard
-            </Link>
-          </Button>
-        </div>
-        <PRDViewer prd={prd} />
+      <main className="container mx-auto py-8">
+        <PRDViewer prd={prd} onDelete={handleDelete} />
       </main>
     </div>
   );

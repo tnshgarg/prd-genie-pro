@@ -9,15 +9,31 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "@/hooks/use-toast";
-import { Download, Edit, Heart, Share } from "lucide-react";
+import { Download, Edit, Heart, Share, Trash2 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
+import { useNavigate } from "react-router-dom";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { usePRDs } from "@/hooks/use-prds";
 
 interface PRDViewerProps {
   prd: PRD;
+  onDelete?: () => void;
 }
 
-export function PRDViewer({ prd }: PRDViewerProps) {
+export function PRDViewer({ prd, onDelete }: PRDViewerProps) {
   const [isFavorite, setIsFavorite] = useState(prd.is_favorite);
+  const navigate = useNavigate();
+  const { deletePRD } = usePRDs();
 
   const handleExport = async (format: "markdown" | "txt") => {
     try {
@@ -91,8 +107,20 @@ export function PRDViewer({ prd }: PRDViewerProps) {
     });
   };
 
+  const handleDelete = async () => {
+    try {
+      await deletePRD(prd.id);
+      if (onDelete) {
+        onDelete();
+      }
+      navigate("/dashboard");
+    } catch (error) {
+      console.error("Failed to delete PRD:", error);
+    }
+  };
+
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
+    <div className="max-w-6xl mx-auto space-y-6">
       <Card className="bg-card">
         <CardHeader>
           <div className="flex items-start justify-between">
@@ -143,6 +171,35 @@ export function PRDViewer({ prd }: PRDViewerProps) {
                 <Download className="h-4 w-4" />
                 Text
               </Button>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="text-destructive"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Delete PRD</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      Are you sure you want to delete this PRD? This action
+                      cannot be undone.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction
+                      onClick={handleDelete}
+                      className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                    >
+                      Delete
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             </div>
           </div>
         </CardHeader>

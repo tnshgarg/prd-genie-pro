@@ -20,13 +20,30 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Heart, Search, FileText, Calendar } from "lucide-react";
+import { Heart, Search, FileText, Calendar, Trash2 } from "lucide-react";
+import { supabase } from "@/lib/supabase";
+import { toast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 interface PRDGridProps {
   prds: PRD[];
+  onDelete?: () => void;
+  deletePRD: (id: string) => Promise<void>;
 }
 
-export function PRDGrid({ prds }: PRDGridProps) {
+export function PRDGrid({ prds, onDelete, deletePRD }: PRDGridProps) {
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [filterCategory, setFilterCategory] = useState<string>("all");
   const [filterStatus, setFilterStatus] = useState<string>("all");
@@ -45,6 +62,17 @@ export function PRDGrid({ prds }: PRDGridProps) {
   const categories = Array.from(
     new Set(prds.map((prd) => prd.category).filter(Boolean))
   );
+
+  const handleDelete = async (prdId: string) => {
+    try {
+      await deletePRD(prdId);
+      if (onDelete) {
+        onDelete();
+      }
+    } catch (error) {
+      console.error("Failed to delete PRD:", error);
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -114,9 +142,40 @@ export function PRDGrid({ prds }: PRDGridProps) {
                   <CardTitle className="text-lg line-clamp-2">
                     {prd.title}
                   </CardTitle>
-                  {prd.is_favorite && (
-                    <Heart className="h-4 w-4 text-red-500 fill-current flex-shrink-0" />
-                  )}
+                  <div className="flex items-center space-x-2">
+                    {prd.is_favorite && (
+                      <Heart className="h-4 w-4 text-red-500 fill-current flex-shrink-0" />
+                    )}
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="text-destructive"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>Delete PRD</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            Are you sure you want to delete this PRD? This
+                            action cannot be undone.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogAction
+                            onClick={() => handleDelete(prd.id)}
+                            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                          >
+                            Delete
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  </div>
                 </div>
                 <CardDescription className="line-clamp-3">
                   {prd.original_idea}
