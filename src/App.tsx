@@ -8,6 +8,7 @@ import SignupPage from "@/app/signup/page";
 import DashboardPage from "@/app/dashboard/page";
 import GeneratePage from "@/app/generate/page";
 import PRDPage from "@/pages/prd/PRDPage";
+import DetailedIdeaPage from "@/pages/idea/DetailedIdeaPage";
 import NotFound from "@/pages/NotFound";
 
 export default function App() {
@@ -39,6 +40,14 @@ export default function App() {
             element={
               <ProtectedRoute>
                 <PRDPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/idea/:id"
+            element={
+              <ProtectedRoute>
+                <DetailedIdeaPage />
               </ProtectedRoute>
             }
           />

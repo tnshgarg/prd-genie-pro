@@ -410,7 +410,11 @@ export default function DashboardPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {filteredIdeas.map((idea) => (
-                <Card key={idea.id} className="relative">
+                <Card
+                  key={idea.id}
+                  className="relative cursor-pointer hover:shadow-md transition-shadow"
+                  onClick={() => navigate(`/idea/${idea.id}`)}
+                >
                   <CardHeader className="pb-2">
                     <div className="flex justify-between items-start">
                       <CardTitle className="text-lg">{idea.title}</CardTitle>
@@ -418,7 +422,10 @@ export default function DashboardPage() {
                         <Button
                           variant="ghost"
                           size="icon"
-                          onClick={() => toggleFavorite(idea)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            toggleFavorite(idea);
+                          }}
                         >
                           {idea.is_favorite ? (
                             <Star className="h-4 w-4 text-yellow-500" />
@@ -432,6 +439,9 @@ export default function DashboardPage() {
                               variant="ghost"
                               size="icon"
                               className="text-destructive"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                              }}
                             >
                               <Trash2 className="h-4 w-4" />
                             </Button>
@@ -474,7 +484,10 @@ export default function DashboardPage() {
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => handleGeneratePRD(idea)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleGeneratePRD(idea);
+                        }}
                       >
                         Generate PRD
                       </Button>

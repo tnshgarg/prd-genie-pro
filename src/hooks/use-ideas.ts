@@ -17,7 +17,7 @@ export function useIdeas() {
 
       const { data, error } = await supabase
         .from('ideas')
-        .select('*')
+        .select('id, title, description, content, category, status, priority, market_size, competition, notes, is_favorite, user_id, created_at, updated_at')
         .eq('user_id', user.id)
         .order('created_at', { ascending: false });
 

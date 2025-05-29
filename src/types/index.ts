@@ -39,6 +39,7 @@ export interface Idea {
   id: string;
   title: string;
   description: string;
+  content: string | null;
   category: string;
   status: IdeaStatus;
   priority: IdeaPriority;

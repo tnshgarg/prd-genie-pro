@@ -2,7 +2,13 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardFooter,
+} from "@/components/ui/card";
 import {
   Select,
   SelectContent,
@@ -104,7 +110,7 @@ export default function IdeasPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-background">
-        <Navbar showIdeas={false} />
+        <Navbar />
         <main className="container mx-auto py-8">
           <div className="flex justify-between items-center mb-8">
             <Skeleton className="h-10 w-48" />
@@ -132,7 +138,7 @@ export default function IdeasPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Navbar showIdeas={false} />
+      <Navbar />
 
       {/* Main Content */}
       <main className="container mx-auto py-8">
@@ -309,7 +315,11 @@ export default function IdeasPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredIdeas.map((idea) => (
-            <Card key={idea.id} className="relative">
+            <Card
+              key={idea.id}
+              className="relative cursor-pointer hover:shadow-md transition-shadow flex flex-col"
+              onClick={() => navigate(`/idea/${idea.id}`)}
+            >
               <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-2">
                 <CardTitle className="text-xl font-bold">
                   {idea.title}
@@ -317,7 +327,10 @@ export default function IdeasPage() {
                 <Button
                   variant="ghost"
                   size="icon"
-                  onClick={() => toggleFavorite(idea)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleFavorite(idea);
+                  }}
                 >
                   {idea.is_favorite ? (
                     <Star className="h-5 w-5 text-yellow-400" />
@@ -368,17 +381,22 @@ export default function IdeasPage() {
                     {idea.competition}
                   </p>
                 )}
+              </CardContent>
+              <CardFooter className="mt-auto flex justify-end">
                 <div className="flex justify-end gap-2">
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => handleGeneratePRD(idea)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      navigate(`/idea/${idea.id}`);
+                    }}
                   >
                     <FileText className="h-4 w-4 mr-2" />
-                    Generate PRD
+                    View PRD
                   </Button>
                 </div>
-              </CardContent>
+              </CardFooter>
             </Card>
           ))}
         </div>
