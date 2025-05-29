@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "@/hooks/use-toast";
-import { Download, Edit, Heart, Share, Trash2 } from "lucide-react";
+import { Download, Edit, Heart, Share, Trash2, Copy } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { useNavigate } from "react-router-dom";
 import {
@@ -71,6 +71,23 @@ export function PRDViewer({ prd, onDelete }: PRDViewerProps) {
     }
   };
 
+  const handleCopyMarkdown = async () => {
+    try {
+      const content = `# ${prd.title}\n\n## Original Idea\n\n${prd.original_idea}\n\n## Product Requirements Document\n\n${prd.generated_prd}`;
+      await navigator.clipboard.writeText(content);
+      toast({
+        title: "Copied to Clipboard",
+        description: "PRD content copied as markdown",
+      });
+    } catch (error) {
+      toast({
+        title: "Copy Failed",
+        description: "Failed to copy PRD content. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
   const toggleFavorite = async () => {
     try {
       const { error } = await supabase
@@ -120,15 +137,15 @@ export function PRDViewer({ prd, onDelete }: PRDViewerProps) {
   };
 
   return (
-    <div className="max-w-6xl mx-auto space-y-6">
+    <div className="max-w-6xl mx-auto space-y-6 px-4 sm:px-6 lg:px-8">
       <Card className="bg-card">
         <CardHeader>
-          <div className="flex items-start justify-between">
+          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
             <div className="space-y-2">
               <CardTitle className="text-2xl text-foreground">
                 {prd.title}
               </CardTitle>
-              <div className="flex items-center space-x-2">
+              <div className="flex flex-wrap items-center gap-2">
                 {prd.category && (
                   <Badge variant="secondary">{prd.category}</Badge>
                 )}
@@ -141,7 +158,7 @@ export function PRDViewer({ prd, onDelete }: PRDViewerProps) {
               </div>
             </div>
 
-            <div className="flex items-center space-x-2">
+            <div className="flex flex-wrap items-center gap-2">
               <Button
                 variant="outline"
                 size="sm"
@@ -155,12 +172,16 @@ export function PRDViewer({ prd, onDelete }: PRDViewerProps) {
               <Button variant="outline" size="sm" onClick={handleShare}>
                 <Share className="h-4 w-4" />
               </Button>
+              <Button variant="outline" size="sm" onClick={handleCopyMarkdown}>
+                <Copy className="h-4 w-4 mr-2" />
+                Copy
+              </Button>
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => handleExport("markdown")}
               >
-                <Download className="h-4 w-4" />
+                <Download className="h-4 w-4 mr-2" />
                 Export
               </Button>
               <Button
@@ -168,7 +189,7 @@ export function PRDViewer({ prd, onDelete }: PRDViewerProps) {
                 size="sm"
                 onClick={() => handleExport("txt")}
               >
-                <Download className="h-4 w-4" />
+                <Download className="h-4 w-4 mr-2" />
                 Text
               </Button>
               <AlertDialog>
