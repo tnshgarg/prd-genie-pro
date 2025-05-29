@@ -26,10 +26,8 @@ import {
 } from "@/components/ui/card";
 import { Spinner } from "@/components/ui/spinner";
 import { toast } from "@/hooks/use-toast";
-import { Lightbulb, Rocket, Users } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { Idea } from "@/types";
-import { Skeleton } from "@/components/ui/skeleton";
 
 export function PRDGeneratorForm() {
   const [isGenerating, setIsGenerating] = useState(false);
@@ -60,23 +58,80 @@ export function PRDGeneratorForm() {
   const category = watch("category");
 
   const generatePRDContent = async (data: PRDGenerationData) => {
-    const prompt = `Create a comprehensive Product Requirements Document (PRD) for the following product idea:
+    const prompt = `You are a senior product manager and technical architect creating a comprehensive, implementation-ready Product Requirements Document (PRD) for AI website builders like Bolt.new, Cursor AI, and Lovable.dev.
 
 Product Idea: ${data.idea}
 Category: ${data.category}
 Target Audience: ${data.targetAudience}
 
-Please structure the PRD with the following sections:
-1. Overview
-2. Problem Statement
-3. Target Audience
-4. User Stories
-5. Functional Requirements
-6. Non-Functional Requirements
-7. Technical Specifications
-8. Success Metrics
+Create a PRD that generates fully functional, feature-rich websites with every detail specified for immediate development.
 
-Format the response in Markdown.`;
+## Required PRD Structure:
+
+### 1. PRODUCT VISION & POSITIONING
+- Vision statement and value proposition
+- Market positioning and success definition
+
+### 2. PROBLEM ANALYSIS
+- Specific pain points and current solution gaps
+- Problem validation and opportunity size
+
+### 3. DETAILED TARGET AUDIENCE
+- Primary persona with demographics, goals, pain points, behaviors
+- Device usage context and technical proficiency
+
+### 4. COMPLETE USER JOURNEY
+- Map every interaction: Discovery → Onboarding → Core Usage → Advanced Features
+- Define user intent, required features, data flow, and edge cases for each stage
+
+### 5. EXHAUSTIVE FEATURE SPECIFICATIONS
+For EVERY feature, specify:
+- Exact UI components needed (buttons, forms, modals, cards, etc.)
+- Complete data requirements (inputs, outputs, validation, storage)
+- Detailed interaction design (clicks, hovers, loading states)
+- Responsive behavior across breakpoints
+- Accessibility requirements (ARIA, keyboard nav, screen readers)
+
+### 6. TECHNICAL ARCHITECTURE
+- Frontend framework choice with justification
+- State management and data flow patterns
+- Complete data models and schemas
+- External integrations and APIs needed
+- Authentication and security requirements
+
+### 7. DETAILED UI/UX SPECIFICATIONS
+- Complete design system: colors (hex codes), typography, spacing, components
+- Layout specifications: navigation, grids, breakpoints (specific pixels)
+- Interactive elements: animations, transitions, hover effects
+
+### 8. USER STORIES WITH ACCEPTANCE CRITERIA
+Structure as: "As a [user], I want to [action] so that [benefit]"
+Include technical implementation notes for each story
+
+### 9. COMPREHENSIVE EDGE CASES
+- Error states, loading states, empty states
+- Offline behavior and data validation
+- Mobile-specific interactions
+
+### 10. IMPLEMENTATION-READY SPECIFICATIONS
+- Component-level breakdown
+- Exact styling requirements
+- Data validation rules
+- API integration details
+
+## Critical Requirements:
+- Every feature must be detailed enough for immediate coding
+- Include specific technical specifications (breakpoints, colors, spacing)
+- Define all UI states (normal, loading, error, empty)
+- Specify responsive behavior for all screen sizes
+- Include accessibility requirements
+- Focus on modern web standards and best practices
+- NO timelines or project management sections
+- Assume React/modern JavaScript framework
+
+Generate a PRD so comprehensive that a developer could build the entire application using only this specification, without needing any additional design decisions or clarifications.
+
+Format in clean Markdown with clear hierarchical structure.`;
 
     const response = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${
