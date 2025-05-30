@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Specification } from "@/types";
+import { PRD } from "@/types";
 import {
   Card,
   CardContent,
@@ -38,7 +38,7 @@ import {
 } from "@/components/ui/alert-dialog";
 
 interface SpecificationGridProps {
-  specifications: Specification[];
+  specifications: PRD[];
   onDelete: () => void;
   deleteSpecification: (id: string) => Promise<void>;
 }
@@ -206,9 +206,11 @@ export function SpecificationGrid({
                     </AlertDialog>
                   </div>
                 </div>
-                <CardDescription>{specification.original_idea}</CardDescription>
+                <CardDescription className="max-h-[120px] overflow-y-auto">
+                  {specification.original_idea}
+                </CardDescription>
               </CardHeader>
-              <CardContent className="flex-grow">
+              <CardContent className="flex-grow min-h-[150px]">
                 <div className="space-y-4">
                   <div className="flex items-center space-x-2">
                     {specification.category && (
