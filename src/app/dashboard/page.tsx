@@ -70,7 +70,7 @@ export default function DashboardPage() {
   } = useIdeas();
   const [user, setUser] = useState<User | null>(null);
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState("prds");
+  const [activeTab, setActiveTab] = useState("ideas");
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<IdeaStatus | "all">("all");
   const [priorityFilter, setPriorityFilter] = useState<IdeaPriority | "all">(

@@ -84,8 +84,12 @@ export default function LandingPage() {
       <header className="bg-background border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-2">
-              <FileText className="h-8 w-8 text-primary" />
+            <div className="flex items-center space-x-1">
+              <img
+                src="/icon.png"
+                alt="IdeaVault Icon"
+                className="h-8 w-auto"
+              />
               <span className="text-xl font-bold text-foreground">
                 IdeaVault
               </span>
