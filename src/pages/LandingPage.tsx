@@ -21,22 +21,22 @@ export default function LandingPage() {
 
   const features = [
     {
-      icon: <Sparkles className="h-6 w-6 text-primary" />,
-      title: "AI-Powered Generation",
+      icon: <Shield className="h-6 w-6 text-primary" />,
+      title: "Secure Idea Storage",
       description:
-        "Transform your product ideas into comprehensive PRDs using advanced AI technology.",
+        "Safely store and organize all your product ideas in one place.",
+    },
+    {
+      icon: <Sparkles className="h-6 w-6 text-primary" />,
+      title: "AI-Powered Prompt Generation",
+      description:
+        "Transform your raw ideas into high-quality Lovable, Bolt.new, and Cursor prompts using advanced AI.",
     },
     {
       icon: <Zap className="h-6 w-6 text-primary" />,
-      title: "Lightning Fast",
+      title: "Rapid Prompt Creation",
       description:
-        "Generate detailed PRDs in seconds, saving you hours of manual work.",
-    },
-    {
-      icon: <Shield className="h-6 w-6 text-primary" />,
-      title: "Secure & Private",
-      description:
-        "Your ideas and documents are protected with enterprise-grade security.",
+        "Quickly generate polished prompts in minutes, saving you valuable time.",
     },
   ];
 
@@ -129,19 +129,40 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-6">
-              Transform Your Ideas into
-              <span className="text-primary">
-                {" "}
-                Lovable, Bolt.new and Cursor Prompts
-              </span>
+              Turn Your Ideas into Powerful, Marketable{" "}
+              <span className="text-blue-500">Lovable</span>,
+              <span className="text-green-500"> Bolt.new</span>, and{" "}
+              <span className="text-purple-500">Cursor</span> Prompts
             </h1>
             <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
-              Generate comprehensive Lovable, Bolt.new and Cursor Prompts in
-              minutes using AI. Perfect for solo founders and entrepreneurs.
+              Securely store and organize your product ideas, then generate
+              comprehensive and effective prompts in minutes using AI. Perfect
+              for solo founders and entrepreneurs.
             </p>
-            <div className="flex justify-center space-x-4">
+            <a
+              href="https://www.producthunt.com/products/ideavault-store-ideas-make-prompts?embed=true&utm_source=badge-featured&utm_medium=badge&utm_source=badge-ideavault&#0045;store&#0045;ideas&#0045;make&#0045;prompts"
+              target="_blank"
+              style={{
+                marginBottom: "2rem",
+                display: "inline-block",
+                margin: "0 auto",
+              }}
+            >
+              <img
+                src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=972541&theme=light&t=1748766981827"
+                alt="IdeaVault&#0032;&#0045;&#0032;Store&#0032;Ideas&#0032;&#0038;&#0032;Make&#0032;Prompts - Your&#0032;AI&#0045;powered&#0032;idea&#0032;companion | Product Hunt"
+                style={{ width: "250px", height: "54px" }}
+                width="250"
+                height="54"
+              />
+            </a>
+            <div className="flex justify-center space-x-4 mt-4">
               {isAuthenticated ? (
-                <Button size="lg" onClick={() => navigate("/dashboard")}>
+                <Button
+                  size="lg"
+                  onClick={() => navigate("/dashboard")}
+                  className="mb-4"
+                >
                   Go to Dashboard
                   <ArrowRight className="h-4 w-4 ml-2" />
                 </Button>
@@ -237,6 +258,18 @@ export default function LandingPage() {
             <p className="text-sm text-muted-foreground">
               © {new Date().getFullYear()} IdeaVault. All rights reserved.
             </p>
+            <a
+              href="https://www.producthunt.com/products/ideavault-store-ideas-make-prompts?embed=true&utm_source=badge-featured&utm_medium=badge&utm_source=badge-ideavault&#0045;store&#0045;ideas&#0045;make&#0045;prompts"
+              target="_blank"
+            >
+              <img
+                src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=972541&theme=light&t=1748766981827"
+                alt="IdeaVault&#0032;&#0045;&#0032;Store&#0032;Ideas&#0032;&#0038;&#0032;Make&#0032;Prompts - Your&#0032;AI&#0045;powered&#0032;idea&#0032;companion | Product Hunt"
+                style={{ width: "250px", height: "54px" }}
+                width="250"
+                height="54"
+              />
+            </a>
           </div>
         </div>
       </footer>
